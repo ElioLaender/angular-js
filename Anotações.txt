@@ -1,0 +1,90 @@
+Módulos:
+
+O angular JS trabalha a partir de módulos, onde devemos ter o módulo principal, responsável por startar a aplicação. Chamamos nosso módulo principal no arquivo de index da aplicação, por exemplo dentro de um arquivo chamado main.js
+
+Importanto framework:
+
+No html principal, devemos realizar a importação do arquivo do angularJS no arquivo. A partir do momento que temos a importação do script do angularJS, já podemos acessar suas propriedades, desde que o arquivo que o chame tenha acesso aos recursos importados, por isso devemos realizar a chamada no index.html do projeto. 
+
+Angular expression:
+
+{{}} : Atrávés dessa expressão, conseguimos acessar no template variáveis que estão nos controllers. Caso o valor não exita, não será informado nada. 
+
+////////////////////
+
+Controllers:
+
+Devemos criar o controller, que serve de intermediário entre a view e a model. Seguido uma base de projetos mcv, temos o diretórios específicos para a camada view, model e controller. 
+
+Como no caso do módule, nosso script controller também deverá ser importado na view em que o mesmo é utilizado. 
+
+////////////////////
+Diretivas:
+
+ng-app="nomeController" // Declara um módulo dentro do html, lembrando que dentro de um módule declaramos o controller. 
+ng-controller="NomeController" //Declara um determinado controller dentro do html.
+
+////////////////////
+
+Escopos AngularJS:
+
+Toda variável declarada dentro de um controller, por exemplo, só é vísivel dentro do escopo da function que declarou a mesma, ex:
+
+angular.module('alurapic').controller('FotosController', function() {
+	var olá = "olá";
+});
+
+Para contornarmos essa situação, o angular fornece o '$scope', que quando declarada torna as variáveis acessíveis para o bloco html onde o controller for chamado, ex:
+
+angular.module('alurapic').controller('FotosController', function($scope) {
+	$scope.ola = "olá";
+});
+
+//////////////////////
+
+* Vejamos as seguintes afirmações sobre Angular:
+
+- Angular é um script como outro qualquer, por isso precisa ser importado em nossa página através da tag script.
+- A diretiva ng-app possui como valor o nome do módulo que desejamos carregar assim que nossa página for carregada.
+- Um módulo pode ter de 0 a N dependências.
+
+Precisamos importar o script do Angular como fazemos com qualquer outro, como os demais módulos criados, por exemplo. Além disso temos de carregar um módulo através da diretiva ng-app. Esses por sua vez podem carregar ou não demais módulos, isto é, suas dependências.
+////////////////////////
+
+angular.module('alurapic'); // uso
+module('alurapic', []); // criação
+
+* Criamos um módulo através do objeto global angular passando dois parâmetros: o nome do módulo e um array com suas dependências, que pode ser vazio caso não possua. No exemplo angular.module('alurapic'); estamos apenas acessar um módulo já existente.
+
+angular.module('contabilidade', []).controller('LancamentosController', function() { });angular.module('estoque').controller('Provisao', function($scope) { });
+
+* Um controller pode ser criado com um módulo ou mais tarde adicionado em um módulo já existente. A função controller recebe como primeiro parâmetro o nome do controller e como segundo a função que o define.
+/////////
+angular.module('alurapic').controller('FotosController', function($scope) {
+  $scope.foto = {
+      titulo : 'Leão',
+      url: 'http://fotosdoalem.com/leao.jpg'
+  };
+});
+
+* A comunicação entre um controller e uma view é feita através do objeto $scope, que representa o escopo de um controller. Qualquer propriedade adicionada neste objeto estará disponível na view e acessível através de AEs, para o elemento onde definimos o escopo do controller, assim como seus filhos.
+
+////////
+
+1 - Data binding significa associação de dado, isto é, podemos associar um dado à view através de Angular Expression e qualquer mudança nesse dado refletirá na sua apresentação na view.
+
+2 - Uma Angular Expression (AE) é somente leitura, isto é, alterações dos dados na view não se propaga para o model.
+
+3 - Um model no Angular pode ser um objeto ou qualquer tipo literal do JavaScript, como String ou Boolean.
+
+4 - Angular não é uma solução que se coaduna com a prática de Progressive Enhancement no que diz respeito a criação de páginas web.
+
+* Uma AE é somente leitura, nossa view lê a informação no escopo do controller, mas não é capaz de atualizá-la. Este tipo de associação é chamado de one-way data binding, a informação flui do controller para a view. Aliás, esse dado associado à view pode ser qualquer tipo literal do JavaScript, inclusive um objeto.
+
+Angular não se coaduna com a prática do Progressive Enhancement, no qual criamos uma página usando um simples HTML e CSS, usando JavaScript apenas para adicionar melhorias. Com Angular, se o JavaScript estiver desativado ou não for suportado, nada da aplicação funcionará.
+
+
+
+
+
+ 
