@@ -83,8 +83,85 @@ angular.module('alurapic').controller('FotosController', function($scope) {
 
 Angular não se coaduna com a prática do Progressive Enhancement, no qual criamos uma página usando um simples HTML e CSS, usando JavaScript apenas para adicionar melhorias. Com Angular, se o JavaScript estiver desativado ou não for suportado, nada da aplicação funcionará.
 
+///////////
 
+* O Angular permite repetir marcações HTML através da diretiva ng-repeat. Primeiro, precisamos adicioná-la no elemento que desejamos repetir, segundo, precisamos indicar na diretiva a propriedade em $scope do controller que será iterada. Dentro desse contexto, temos um exemplo abaixo do uso da diretiva:
 
+<p ng-repeat="frase in frases">{{frase}}</p>
 
+//////////
 
+* Angular possui seu próprio sistema de injeção de dependências, podendo a dependência ser injetada em qualquer posição:
+
+angular.module('alurapic').controller('a', function($http, $scope) {});
+angular.module('alurapic').controller('c', function($scope, $http) {});
+
+//////////
+
+Angular fornece um serviço exclusivo para realização de requisição Ajax, o $http. Vejamos algumas afirmativas sobre este serviço:
+
+1) Pode ser injetado como qualquer outro artefato do Angular
+
+2) Possui a função .get, que recebe como parâmetro um endereço, inclusive é especializada na leitura de dados.
+
+3) A função .get retorna uma promise.
+
+4) Podemos usar .then e .catch para obter os dados e capturar erros respectivamente ou .success e .error, açúcares sintáticos com a mesma finalidade.
+
+* Todas as sentenças são verdadeiras. Existem outras funções em $http responsáveis pelo envio, remoção e atualização de dados quando seguimos o padrão REST(seus verbos).
+
+////////////
+
+Exemplo de declaração de um controller e configuração correta de um elemento da view para usar a diretiva ng-repeat:
+
+// controller
+angular.module('alurapic').controller('NomeDoController', function($scope) {
+   $scope.letras = ['A', 'B', 'C'];
+});
+
+// na view
+
+<ul ng-controller="NomeDoController">
+    <li ng-repeat="letra in letras">{{letra}}</li>
+</ul>
+
+/////////////
+
+* Temos as seguintes declarações sobre diretivas:
+- Diretivas são criadas através da função .directive
+- Diretivas são componentes do Angular que ensinam novos truques para o navegador
+
+Diretivas são componentes reutilizáveis que podem encapsular marcação e comportamento. São criadas sempre dentro de um módulo através da função .directive. Toda diretiva deve sempre retornar um DDO (Directive Definition Object) configurado para que funcione
+
+/////////////
+
+<abas-dinamicas-especiais></abas-dinamicas-especiais> e <div abas-dinamicas-especiais></div>
+
+Com a propriedade restrict declaramos que ela pode ser utilizada tanto como atributo (A), quanto como elemento (E). Mesmo usando camelCase na definição da diretiva, devemos utilizar o hífen na marcação HTML.
+
+* Definindo um template html em arquivo separado:
+
+- A propriedade url não faz parte de um DDO, mas temos a propriedade templateUrl, que permite criar um arquivo HTML separado para toda a marcação HTML dessa diretiva, indicando apenas o caminho para o arquivo. Alternativamente podemos usar a propriedade template com toda marcação necessária da diretiva.
+
+/////////////////
+
+* Veja o uso de uma diretiva para mostrar os dados de um usuario logado:
+<usuario-logado nome-completo="{{usuario.nome-completo}}"></usuario-logado>
+
+angular.module('minhasDiretivas', [])
+    .directive('usuarioLogado', function() {
+
+        var ddo = {};
+        ddo.restrict = "AE";
+
+        ddo.scope = {
+            nome: 'AQUI'
+        };
+
+        return ddo;
+    });
+
+Repare que o atributo no elemento HTML se chama nome-completo e na diretiva usamos apenas nome. Se os dois fossem iguais, bastaria colocar @ no lugar de AQUI. Mas, como possuem nomes diferentes, é preciso ser explícito na declaração do scope usando @nome-completo para capturar o valor do atributo.
+
+///////////////////
  
