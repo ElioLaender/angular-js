@@ -9,4 +9,4 @@ Para importarmos o módulo, devemos chamar o mesmo dentro de um bloco html em qu
 Atenção: Além de importar o arquivo do angularJS, devemos também importar o script que contém o módulo que estamos declarando dentro
 do ng-app=""
 */
-angular.module('alurapic', []);
+angular.module('alurapic', ['minhasDiretivas']);
