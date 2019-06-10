@@ -164,4 +164,61 @@ angular.module('minhasDiretivas', [])
 Repare que o atributo no elemento HTML se chama nome-completo e na diretiva usamos apenas nome. Se os dois fossem iguais, bastaria colocar @ no lugar de AQUI. Mas, como possuem nomes diferentes, é preciso ser explícito na declaração do scope usando @nome-completo para capturar o valor do atributo.
 
 ///////////////////
- 
+
+Two way data binding:
+
+Diferente da Angular Expression (AE) que é somente leitura (one-way data binding), a diretiva ng-model permite ler e propagar alterações de dados a partir da view.
+
+Associação de dados multidirecional. Para isso, precisamos utilizar o ng-model="" passando o nome da variável responsável por receber este valor no controller. 
+
+Filtrando dados de um array:
+
+O ng-repeat permite que seja passado um filtro para o mesmo através do operador pipe '|', dessa forma podemos passar o filter, informando qual variável será utilizada
+na aplicação do filtro. 
+
+ng-repeat="foto in fotos | filter: filtro"
+
+Quando usamos filter, todas as propriedades dos objetos são vasculhadas à procura do valor digitado. E se quisermos buscar apenas, por exemplo, pelo nome do funcionário? Podemos fazer essa forma:
+
+ng-repeat="funcionario in funcionarios | filter: {nome: textoFiltro} "
+
+
+///////////////////
+
+Qual a diferença entre a diretiva ng-model e Angular Expression (AE)?
+
+O primeiro lê e grava no model, enquanto o segundo apenas lê.
+
+A diretiva ng-model permite ler e também alterar o model associado (two-way data binding). 
+É muito comum em telas de cadastro, onde precisamos capturar os dados do usuário para depois enviá-los numa requisição Ajax, por exemplo. Já a Angular Expression (AE) apenas lê o model (one-way data binding).
+
+///////////////////
+Temos as seguintes frases a respeito da diretiva ng-model-options:
+
+1) Serve para postergar a atualização do modelo (dado).
+
+2) Sua unidade de trabalho é em milissegundos, passada através da propriedade debounce.
+
+3) Não pode ser usada sem a diretiva ng-model
+
+4) Pode vir antes ou depois da diretiva ng-model sem problemas.
+
+Não faz sentido usarmos ng-model-options sem ng-model, já que a primeira passa opções especiais para a segunda. 
+A diretiva ng-model-options pode ser usada para postergar a atualização do model, recebendo um objeto com a propriedade debounce com valor em milissegundos. A ordem de escrita não é importante.
+
+Como o Angular sabe qual diretiva aplicar primeiro? Internamente, todas as diretivas do angular possuem a propriedade priority. 
+Por exemplo, a diretiva ng-model possui a prioridade 1 enquanto a ng-model-options 0. A diretiva ng-repeat possui prioridade 1000. Diretivas com menor número de prioridade são aplicadas primeiro. Isso faz todo sentido, pois ng-model-options precisa ser aplicada antes de ng-model entrar em ação. É por isso que a ordem da diretiva no elemento da tag HTML não dita quem será aplicado primeiro, mas sim a prioridade.
+
+/////////////////////
+ngAnimate:
+
+* No mundo CSS, não é incomum termos uma classe declarada que é ativada apenas quando algum elemento tiver essa classe. 
+Geralmente, podemos adicionar e remover classes via JavaScript, o que permite a aplicação condicional do estilo.
+O Angular possui o módulo ngAnimate, que pode nos ajudar nessa tarefa. Sobre este módulo podemos afirmar que:
+
+- Quando carregado, faz com que algumas diretivas do core do Angular adicionem e removam classes dinamicamente. 
+Porém, não temos controle das classes adicionadas e precisamos recorrer à documentação para ver aquelas que nos interessam.
+
+- É um módulo que não faz parte do core do Angular.
+
+O módulo ngAnimate precisa ser carregado, uma vez que o módulo core angular.min.js não o carrega automaticamente. Este módulo, apesar do nome sugestivo, não traz qualquer animação pronta para uso, ele apenas habilita para uma série de diretivas a capacidade de adicionarem ou removerem classes de acordo com o estado de seus elementos. Fazendo uma analogia com CSS, é como se fossem pseudo classes.

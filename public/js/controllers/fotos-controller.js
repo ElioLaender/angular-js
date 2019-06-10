@@ -18,6 +18,7 @@ function($scope, $http) ou function($http, $scope)
  */
 angular.module('alurapic').controller('FotosController', function($scope, $http) {
     $scope.fotos = [];
+    $scope.filtro = '';
     
     // Retorna uma promisse
     // $http.get('v1/fotos')
