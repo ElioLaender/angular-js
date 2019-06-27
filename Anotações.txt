@@ -222,3 +222,317 @@ Porém, não temos controle das classes adicionadas e precisamos recorrer à doc
 - É um módulo que não faz parte do core do Angular.
 
 O módulo ngAnimate precisa ser carregado, uma vez que o módulo core angular.min.js não o carrega automaticamente. Este módulo, apesar do nome sugestivo, não traz qualquer animação pronta para uso, ele apenas habilita para uma série de diretivas a capacidade de adicionarem ou removerem classes de acordo com o estado de seus elementos. Fazendo uma analogia com CSS, é como se fossem pseudo classes.
+
+//////////////////////
+
+Sobre Single Page Applications (SPA), podemos afirmar:
+
+1) Não recarrega durante seu uso.
+
+2) Parciais (partials) são fragmentos de páginas que são carregados dinamicamente.
+
+3) Ao trabalhar com SPA no Angular, indicamos onde serão carregadas as partials usando a diretiva <ng-view>.
+
+4) Podemos usar Angular em uma aplicação que não seja SPA.
+
+Angular tem como foco a criação de Single Page Applications (SPA's), porém seu uso não é exclusivo para este tipo de aplicação. 
+Uma SPA é aquela aplicação que não recarrega durante seu uso. No caso do Angular, há um sistema de rotas que funciona no lado do cliente capaz de carregar do servidor fragmentos de páginas, chamadas de partials (parciais). 
+Esses fragmentos são inseridos na página principal da aplicação.
+
+///////////////////////
+
+Para saber mais: a diretiva ng-src
+Muitas vezes, recebemos mensagens estranhas no console do navegador, principalmente quando usamos uma AE para o atributo src da tag img. Isso acontece porque o browser tem uma política agressiva no carregamento de imagens baixando-as antes que o Angular possa processar as AE. Se isso incomodá-lo, você pode usar a diretiva ng-src no lugar src. Com isso, apenas Angular processará a diretiva, inclusive só depois da AE ter sido avaliada.
+
+Sua diretiva fica assim:
+
+<img class="img-responsive center-block" ng-src="{{url}}" alt="{{titulo}}">
+
+///////////////////////
+
+Sobre a configuração de rotas no lado do cliente Angular:
+
+- Precisamos importar o módulo ngRoute para que consigamos configurar rotas.
+- O artefato $routeProvider é um artefato injetável dependente do carregamento do módulo de rotas.
+- Para configurarmos uma rota, precisamos fornecer no mínimo o nome da rota e qual parcial será carregada.
+
+Para que configuremos rotas, o módulo ngRoute precisa estar carregado, isso significa que precisamos importar o script do módulo e adicioná-lo como dependência de algum módulo que realizará a configuração de rotas. 
+É através da função .config que configuramos rotas, solicitando através de injeção $routeProvider. 
+O artefato $routeProvider só estará disponível para injeção se o módulo ngRoute tiver sido carregado previamente. 
+Podemos usar a função .when do $routeProvider para configurar efetivamente uma rota. Ela recebe um nome, e um objeto contendo, o controller que será associado (pode ser omitido) e o caminho para a parcial que será carregada.
+
+///////////////////////
+
+* O serviço $http nos fornece um método chamado post, que usamos para enviar os dados:
+
+$http.post('/v1/fotos', $scope.foto)
+     .success(function() {
+              $scope.mensagem = 'Foto cadastrada com sucesso';
+     });
+
+///////////////////////
+
+O HTML5 já vem com uma série de recursos para validação de formulários, porém não são tão flexíveis e muitas vezes precisamos modificá-los via JavaScript para atingirmos nossos objetivos (se você ainda não precisou, excelente!).
+
+É aí que entra a validação do Angular. Ela vem completar, inclusive ampliar os recursos de validação do HTML5, porém com a diferença de que temos flexibilidade no tratamento de mensagens e outros recursos.
+
+A questão é que precisamos abdicar do sistema de validação do HTML5 e abraçar totalmente o do Angular. Sendo assim, precisamos desabilitar o sistema de validação do HTML5.
+
+<form novalidate>
+</form>
+
+Desabilitamos a validação do HTML5 adicionando o atributo novalidate no formulário.
+
+//////////////////////////
+
+Podemos afirmar sobre as diretivas ng-hide e ng-show:
+
+A diretiva ng-hide esconde um elemento da tela quando seu valor for true, caso contrário ele continuará a ser exibido. Já a diretiva ng-show exibe o elemento quando seu valor for true. As duas diretivas possuem semânticas diferentes, apesar de conseguirem resultados semelhantes.
+
+//////////////////////////
+
+Segue algumas afirmações sobre o atributo name quando usamos a validação do Angular:
+
+1) Temos acesso ao objeto criado implicitamente pelo Angular, que representa nosso formulário através do valor que atribuímos ao name do formulário.
+
+2) É a partir do objeto implícito que representa nosso formulário que temos acesso a todos os elementos de entrada, contanto que eles também possuam o atributo name devidamente preenchido.
+
+3) Supondo que tenhamos um formulário com o name vendas, podemos em nossos controllers testar se ele é válido ou inválido através das propriedades $scope.vendas.$valid e $scope.vendas.$invalid, respectivamente.
+
+4) É possível combinar a diretiva ng-disabled com o status de válido ou inválido do formulário, para desabilitar um botão caso o formulário esteja inválido.
+
+Através do atributo name podemos acessar o objeto criado pelo Angular para representar o form, por exemplo, e através dele podemos ainda acessar cada input também pelo atributo name.
+
+Usamos a diretiva ng-disabled, mas qual a razão de sua existência se já existe o atributo disabled, nativo do HTML? Bem, a especificação do HTML não requer que os navegadores preservem valores de atributos booleanos, como disabled. A presença desse atributo significa true e sua ausência false. Se tivéssemos colocado uma expressão do Angular para este atributo a informação de associação poderia ser perdida quando o navegador removesse o atributo.
+
+//////////////////////////////
+
+Sabemos que o Angular interage com a interface de eventos do JavaScript. Pensando nisto, qual das diretivas abaixo devemos utilizar para detectar o click do usuário em um botão e executar alguma função?
+
+ng-click
+
+Para cada evento padrão do JavaScript, existe sua diretiva correspondente no mundo Angular. É claro, se novos eventos forem criados, a biblioteca core do Angular precisará ser atualizada para suportar esses eventos.
+
+//////////////////////////////
+
+Precisamos do artefato $routeParams para termos acesso aos parâmetros passados nas URL das rotas. Ele é um objeto cuja as propriedades equivalem ao nome do ID definido na configuração de rota. Por exemplo, se tivermos: produtos/:produtoId, acessamos o ID do produto através de $routeParams.produtoId. Se a rota for filmes/:categoriaFilmeId, acessamos como $routeParams.categoriaFilmeId.
+
+Seu controller poderia ter ficado assim:
+
+angular.module('vendas',[]).controller('ProdutoController', function($scope, $routeParams) {
+   console.log($routeParams.produtoId);
+});
+
+///////////////////////////////
+
+Qual das opções abaixo possui a estrutura sintática correta para criação de uma combobox através da diretiva ng-options?
+
+<select 
+  ng-model="foto.grupo"
+  ng-controller="GruposController"
+  ng-options="grupo._id as grupo.nome for grupo in grupos">
+    <option value="">Escolha um grupo</option>
+</select>
+
+A diretiva ng-options possui comportamento parecido com ng-repeat, porém a sintaxe grupo._id as grupo.nome indica que o valor do elemento será o ID do grupo e o valor exibido será seu título. O trecho for grupo in grupos percorrerá a lista de grupos disponibilizada no controller, construindo cada item de nossa lista.
+
+////////////////////////////////
+
+Quando estamos utilizando endpoints REST no nosso back-end, o $http acaba não conseguindo esconder a complexidade deste tipo de serviço. Para este tipo de padrão, o Angular nos oferece o módulo ngResource
+
+O primeiro passo para usarmos ngResource é importar o script do módulo ngResource em nossa view index.html. O segundo, não menos importante, é declararmos ngResource como dependência do módulo principal da aplicação. Assim, podemos começar a modificar o nosso FotosController para utilizar o $resource no local do $http.
+
+////////////////////////////////
+
+Quando precisamos utilizar um mesmo recurso em diversos controllers diferentes, o Angular nos dá a opção de criar um serviço, através da função factory, que contenha este recurso, disponibilizando-o para os controllers através de injeção de dependência.
+
+angular.module('meusServicos', ['ngResource'])
+    .factory('recursoFoto', function($resource) {
+
+        return $resource('/v1/fotos/:fotoId', null, {
+            'update' : { 
+                method: 'PUT'
+            }
+        });
+    });
+
+Utilizamos a função factory para criar um serviço, ela recebe como parâmetro o nome do serviço e a uma função que deve retornar um objeto.
+
+Uma das grandes vantagens de se utilizar o $resource é que ele provê um alto nível de abstração em relação ao seu similar $http, facilitando quando estamos trabalhando com um back-end RESTful.
+
+O $resource não suporta o verbo HTTP PUT, porém é possível implementá-lo. Por fim, a declaração correta da função .query() precisa receber funções anônimas. A primeira representando a função (callback) de sucesso, e a segunda a função de erro.
+
+/////////////////////////////////
+
+Opa! Criar diretivas você já sabe, mas será que compreendeu bem a diferença entre @, & e =?
+
+Faremos uma revisão (mas prepare-se, no final tem uma pergunta "mega blast ultra super":
+
+Usamos @ quando queremos realizar uma cópia do valor passado para a diretiva no HTML para dentro do escopo isolado na diretiva. Essa cópia é sempre um valor em string.
+
+Usamos & geralmente quando queremos executar dentro de uma diretiva uma função que pertence a um escopo pai, o de um controller.
+
+Usamos = quando queremos que tanto a diretiva quanto o controller acessem o mesmo dado, isto é, qualquer alteração no escopo privado da diretiva afetará a propriedade do controller e qualquer alteração nesta propriedade no controller afetará a diretiva. Temos aqui uma comunicação bidirecional.
+
+Agora que você já lembrou dessa "sopa de caracteres" vem a pergunta.
+
+Partindo do pressuposto que já temos o módulo puzzle criado, temos a seguinte diretiva em uso:
+
+<div ng-controller="CharadaController">
+      <minha-charada titulo="{{titulo}}" ></minha-charada>
+</div>
+O controller:
+
+     angular.module('puzzle').controller('CharadaController', function($scope) {
+           $scope.titulo = "Alura";
+     });
+Agora nossa diretiva:
+
+   angular.module('puzzle').directive('minhaCharada', function() {
+       var ddo = {};
+       ddo.restrict = 'E';
+       ddo.scope = {
+            titulo: '@'
+       };
+       ddo.template = '<p>{{titulo}}</p>';
+       return ddo;
+   });
+Qual será o resultado do processamento da diretiva:
+
+<div ng-controller="CharadaController">
+      <minha-charada titulo="{{titulo}}" ></minha-charada>
+</div>
+
+///////////////////////////////////
+
+Angular nos blinda de termos que lidar com o DOM, porém ele não tem resposta para tudo e acabamos tendo que manipulá-lo.
+
+Deve ser realizada em diretivas, pois o código que manipula o DOM ficará separado do código de um controller ou de um serviço. Como nem o controller nem o serviço manipulam DOM, tornam-se mais fáceis de compreender e de testar em seu framework de teste favorito.
+
+É aconselhável que manipulação de DOM seja realizada em diretivas, assim separamos essa responsabilidade do código de um controller ou de um serviço. Por consequência ambos tornam-se mais fáceis de compreender e de testar. Porém, nada impede que o desenvolvedor manipule DOM dentro dos controllers, o Angular não bloqueia isso, apesar de contestável, pela filosofia do framework.
+
+///////////////////////////////////
+
+Diretivas possuem a propriedade link, cuja função nos dá acesso ao elemento do DOM no qual ela foi adicionada na marcação HTML, inclusive ao escopo privado da diretiva. É nela que manipulamos DOM quando necessário.
+
+Diferente dos parâmetros injetados em um controller, no qual a ordem não importa, a função link possui parâmetros posicionais. Se invertemos a ordem dos parâmetros teremos sérios problemas em nossa diretiva.
+
+///////////////////////////////////
+
+Lembre-se que você precisará manipular DOM e o local indicado para isso são nas diretivas, não nos controllers. Passos gerais da tarefa:
+
+1) Você aprendeu que $watch permite executarmos um código toda vez que uma propriedade de algum objeto mudar. Excelente, mas também aprendeu que se houver outra solução que não dependa de watcher, melhor será para o desempenho da sua aplicação. Watchers em si não são o problema, o problema são quando o número deles é exorbitante. Crie a diretiva meuFocus no módulo minhasDiretivas. Ela deve usar scope.$on para escutar ao evento fotoCadastrada. Quando evento for disparado, você precisará focar o elemento no qual a diretiva foi atribuída. Ficou com dúvida? A explicação do capítulo pode ajudá-lo, aliás, uma boa oportunidade para fazer uma revisão. Só não esqueça que quem disparará o evento será o serviço CadastroDeFotos através de $rootScope.
+
+2) Com a diretiva meuFocus criada, adicione-a ao botão Voltar da parcial foto.html. Salve uma foto e verifique se o botão Voltar ganha o foco.
+
+////////////////////////////////////
+
+O treinamento contribuiu com uma visão geral sobre diretivas, porém não deixamos de aprender bastante coisa, inclusive truques. Pode ser que tenha passado na sua cabeça a seguinte pergunta: como criar diretivas que busquem dados do servidor e utilizem esses dados? Pergunta justa, não? Muito bem, se você fez todos os exercícios até agora, merece esse bônus, vamos lá!
+
+Vamos criar uma diretiva chamada meusTitulos. Essa diretiva buscará fotos do servidor e montará uma lista com apenas os títulos dessas fotos. Vamos alterar public/js/directives/minhas-diretivas.js:
+
+angular.module('minhasDiretivas', [])
+    // diretivas anteriores omitidas
+    .directive('meusTitulos', function() {
+        var ddo = {};
+        ddo.restrict = 'E';
+        ddo.template = '<ul><li ng-repeat="titulo in titulos">{{titulo}}</li></ul>';
+        return ddo;
+});
+
+Até aqui, nenhuma novidade. Precisamos agora elaborar o código que busca as fotos do servidor. Para isso, precisaremos de recursoFoto, mas como? Sabemos que ele é um artefato injetável em controllers em serviços, mas em diretivas? A solução mora na propriedade controller do nosso ddo:
+
+angular.module('minhasDiretivas', [])
+    // diretivas anteriores comentadas
+    .directive('meusTitulos', function() {
+        var ddo = {};
+        ddo.restrict = 'E';
+        ddo.template = '<ul><li ng-repeat="titulo in titulos">{{titulo}}</li></ul>';
+        ddo.controller = function($scope, recursoFoto) {
+        };
+        return ddo;
+    });
+
+A propriedade controller permite passarmos uma função que permite termos acesso aos injetáveis do Angular, como $scope e recursoFoto. Há outros elementos exclusivos que não abordaremos aqui. Você deve estar se perguntando: ok, você me convenceu, mas como recursoFoto foi injetado se não temos o módulo meusServicos como dependência de minhasDiretivas? Resposta elementar caro aluno: nosso módulo principal da aplicação já carrega o módulo meusServicos, inclusive o módulo minhasDiretivas, por isso recursoFoto é injetável. Porém, fica mais bonito declarar explicitamente essa dependência em nosso módulo, sem efeito colateral algum.
+
+Agora, basta buscarmos nossas fotos e adicionarmos o resultado em $scope.titulos. Veja que acessamos esta propriedade através da diretiva ng-repeat do nosso template:
+
+// explicitei a dependência do módulo `meusServicos`
+angular.module('minhasDiretivas', ['meusServicos'])
+    // diretivas anteriores comentadas
+    .directive('meusTitulos', function() {
+        var ddo = {};
+        ddo.restrict = 'E';
+        ddo.template = '<ul><li ng-repeat="titulo in titulos">{{titulo}}</li></ul>';
+        ddo.controller = function($scope, recursoFoto) {
+            recursoFoto.query(function(fotos) {
+                $scope.titulos = fotos; // ainda não é isso que queremos!
+            });
+        };
+        return ddo;
+});
+
+Espere um pouco, $scope.titulos está recebendo a lista de fotos, não queremos isso! Queremos é uma lista de títulos. Que tal um pouquinho de JavaScript do "bem" para nos ajudar na tarefa de criar uma nova lista a partir de outra? Vamos usar a função .map:
+
+angular.module('minhasDiretivas', ['meusServicos'])
+    // diretivas anteriores comentadas
+    .directive('meusTitulos', function() {
+        var ddo = {};
+        ddo.restrict = 'E';
+        ddo.template = '<ul><li ng-repeat="titulo in titulos">{{titulo}}</li></ul>';
+        ddo.controller = function($scope, recursoFoto) {
+            recursoFoto.query(function(fotos) {
+                $scope.titulos = fotos.map(function(foto) {
+                    return foto.titulo;
+                });    
+            });
+        };
+        return ddo;
+    });
+
+A função map itera sobre nossa lista fornecendo acesso ao elemento da iteração no seu parâmetro. Poderia ser qualquer nome, mas nada mais justo chamarmos de foto, já que estamos iterando sobre uma lista de fotos. Para cada foto retornamos seu titulo, isto é, no final da iteração teremos uma nova lista, mas de títulos apenas.
+
+Muito bem, agora é só utilizarmos nossa diretiva. Para não bagunçar nosso projeto, vamos adicioná-la como último elemento da parcial `principal.html', assim:
+
+<meus-titulos></meus-titulos>
+
+Recarregue a página principal da aplicação e veja o resultado. Uma simples lista com os títulos de nossas fotos deve ser exibida no final da página. Imagine as possibilidades que essa abordagem abre! Como diz o ditado, "grandes poderes trazem grandes responsabilidades".
+
+//////////////////////////////////////////////
+
+BÔNUS: blindando-se contra minificação
+
+É extremamente comum a minificação de scripts para reduzir o tamanho dos arquivos e por conseguinte diminuir o uso de banda por parte do cliente, ainda mais se ele estiver em uma rede móvel como a 3G.
+
+O problema é que o processo de minificação altera o nome dos parâmetros das funções. Não há problema algum nisso, contanto que o novo nome seja trocado em todos os lugares em que é usado, porém o sistema de injeção de dependências do Angular é baseado no nome dos parâmetros. A conclusão disso é que nada mais funcionará no Angular após a minificação, já que os parâmetros das funções serão trocados por outros nomes aleatórios e menores que não tem nada a ver.
+
+Para solucionar este problema, o Angular possui o annotation system, um sistema de anotação que permite dizer o que deve ser injetado para cada parâmetro do controller, mesmo que seu nome seja trocado. Veja a solução:
+
+Este controller :
+
+angular.module('alurapic')
+    .controller('FotoController', function($scope, recursoFoto, $routeParams, cadastroDeFotos) {
+            // código omitido
+    });
+
+Vira:
+
+angular.module('alurapic')
+    .controller('FotoController', ['$scope', 'recursoFoto', '$routeParams', 'cadastroDeFotos'], function($scope, recursoFoto, $routeParams, cadastroDeFotos) {
+            // código omitido
+}]);
+
+    }]);
+Veja que o segundo parâmetro do controller é um array que recebe primeiro todos os artefatos que o controller do Angular receberá e por último a função que define o controller. O processo de minificação jamais tocará nos dados do array e o Angular segue a convenção que o primeiro parâmetro do array será injetado como primeiro parâmetro da função do controller. Se o nome do parâmetro da função do controller muda, tudo continuará funcionando.
+
+A mesma coisa pode ser feita com diretivas e serviços.
+
+Devido ao grande volume de JavaScript carregado nas nossas páginas, as vezes nossa performance e uso de banda ficam prejudicados ao usar um framework js para Single Page Applications (SPA's). Daí a necessidade de usar técnicas de compressão de arquivos como citado no exercício. O pessoal mais ligado à performance web geralmente critica o uso dessas ferramentas, mas algumas técnicas para minimizar esse inconveniente vêm sendo cada vez mais usadas.
+////////////////////////////////
+
+
+
+
+
+
+
