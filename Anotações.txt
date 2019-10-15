@@ -21,7 +21,7 @@ Como no caso do módule, nosso script controller também deverá ser importado n
 ////////////////////
 Diretivas:
 
-ng-app="nomeController" // Declara um módulo dentro do html, lembrando que dentro de um módule declaramos o controller. 
+ng-app="nomeModulo" // Declara um módulo dentro do html, lembrando que dentro de um módule declaramos o controller. 
 ng-controller="NomeController" //Declara um determinado controller dentro do html.
 
 ////////////////////
@@ -77,7 +77,7 @@ angular.module('alurapic').controller('FotosController', function($scope) {
 
 3 - Um model no Angular pode ser um objeto ou qualquer tipo literal do JavaScript, como String ou Boolean.
 
-4 - Angular não é uma solução que se coaduna com a prática de Progressive Enhancement no que diz respeito a criação de páginas web.
+4 - Angular não é uma solução que se coaduna com a prática de Progressive Enhancement (o angular não visa dar suporte a navegadores mais antigos) no que diz respeito a criação de páginas web.
 
 * Uma AE é somente leitura, nossa view lê a informação no escopo do controller, mas não é capaz de atualizá-la. Este tipo de associação é chamado de one-way data binding, a informação flui do controller para a view. Aliás, esse dado associado à view pode ser qualquer tipo literal do JavaScript, inclusive um objeto.
 
